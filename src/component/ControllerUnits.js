@@ -22,7 +22,16 @@ class ControllerUnits extends Component {
   render() {
     let unitClass = "controller-unit";
 
-    unitClass += this.props.arrange.isCenter ? ' is-center' : '';
+    // 根据不同的图片状态，显示不同的按钮状态
+    if (this.props.arrange.isCenter) {
+      // 居中状态
+      unitClass += ' is-center';
+
+      if (this.props.arrange.isInverse) {
+        // 反转状态
+        unitClass += ' is-inverse';
+      }
+    }
 
     return (
       <span className={unitClass} onClick={this.handleClick}></span>

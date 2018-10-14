@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "arrow";
+  src: url("../font/arrow.eot") format("eot"),
+  url("../font/arrow.svg") format("svg"),
+  url("../font/arrow.ttf") format("ttf"),
+  url("../font/arrow.woff") format("woff");
+}
+
 .controller-unit {
   display: inline-block;
   width: 30px;
@@ -5,6 +13,7 @@
   margin: 0 5px;
 
   text-align: center;
+  vertical-align: middle;
 
   cursor: pointer;
 
@@ -17,5 +26,20 @@
 
   &.is-center {
     transform: scale(1);
+    background-color: #888;
+
+    &::after {
+      content: '\21ba';
+      font-family: "arrow";
+      font-size: 22px;
+      display: inline-block;
+      line-height: 30px;
+      color: #fff;
+    }
+
+    &.is-inverse {
+      background-color: #555;
+      transform: rotateY(180deg);
+    }
   }
 }

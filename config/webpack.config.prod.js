@@ -90,7 +90,7 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -121,7 +121,7 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
+
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -136,7 +136,7 @@ module.exports = {
           // "url" loader works just like "file" loader but it also embeds
           // assets smaller than specified size as data URLs to avoid requests.
           {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.eot$/, /\.svg$/, /\.ttf$/, /\.woff$/],
             loader: require.resolve('url-loader'),
             options: {
               limit: 10000,
@@ -149,9 +149,58 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
+
               compact: true,
             },
+          },
+          // eslint语法检查
+          {
+             test: /\.js$/,
+             loader: 'eslint-loader',
+             enforce: "pre",
+             include: [path.resolve(__dirname, 'src')], // 指定检查的目录
+             options: { // 这里的配置项参数将会被传递到 eslint 的 CLIEngine
+               formatter: require('eslint-friendly-formatter') // 指定错误报告的格式规范
+             }
+          },
+          // 处理json文件
+          {
+            test: /\.json$/,
+            loader: require.resolve('json-loader')
+          },
+          // 使用scss文件添加loader；在这里更改配置，需要重新npm start来运行项目
+          {
+            test: /\.scss$/,
+	          use: [
+		           require.resolve('style-loader'),
+               {
+                 loader: require.resolve('css-loader'),
+                 options: {
+                   importLoaders: 1,
+                 },
+               },
+               {
+                 loader: require.resolve('postcss-loader'),
+                 options: {
+                   // Necessary for external CSS imports to work
+                   // https://github.com/facebookincubator/create-react-app/issues/2677
+                   ident: 'postcss',
+                   plugins: () => [
+                     require('postcss-flexbugs-fixes'),
+                     autoprefixer({
+                       browsers: [
+                         '>1%',
+                         'last 4 versions',
+                         'Firefox ESR',
+                         'not ie < 9', // React doesn't support IE8 anyway
+                       ],
+                       flexbox: 'no-2009',
+                     }),
+                   ],
+                 },
+               },
+               require.resolve('sass-loader')
+	          ]
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
@@ -222,7 +271,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
+            exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/, /\.scss$/],
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
