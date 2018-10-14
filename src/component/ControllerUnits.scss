@@ -1,0 +1,21 @@
+.controller-unit {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  background-color: #aaa;
+
+  border-radius: 50%;
+
+  transform: scale(0.5);
+  transition: transform .3s ease-in-out;
+
+  &.is-center {
+    transform: scale(1);
+  }
+}
